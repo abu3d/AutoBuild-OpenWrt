@@ -79,6 +79,7 @@ jobs:
       run: |
         git clone https://github.com/xiaorouji/openwrt-passwall.git package/openwrt-passwall
         git clone https://github.com/281677160/openwrt-package.git package/281677160
+        git clone https://github.com/sirpdboy/luci-theme-opentopd package/luci-theme-opentopd
   
     - name: argon_new主题
       working-directory: ./openwrt
@@ -86,13 +87,6 @@ jobs:
         cd package/lean
         rm -rf luci-theme-argon
         git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
-        
-    - name: luci-theme-opentopd主题
-      working-directory: ./openwrt
-      run: |
-        cd package
-        rm -rf luci-theme-opentopd
-        git clone -b 18.06 https://github.com/sirpdboy/luci-theme-opentopd.git
         
     - name: netdata汉化
       working-directory: ./openwrt
