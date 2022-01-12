@@ -87,6 +87,13 @@ jobs:
         rm -rf luci-theme-argon
         git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
         
+    - name: luci-theme-opentopd主题
+      working-directory: ./openwrt
+      run: |
+        cd package/lean
+        rm -rf luci-theme-opentopd
+        git clone -b 18.06 https://github.com/sirpdboy/luci-theme-opentopd.git
+        
     - name: netdata汉化
       working-directory: ./openwrt
       run: |
