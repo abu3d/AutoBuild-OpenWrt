@@ -11,9 +11,9 @@ on:
   release:
     types: [published]
 
-  #push:
-  #  branches: 
-  #    - master
+  push:
+    branches: 
+      - master
 
   #schedule:
   #  - cron: 0 8 * * 5
@@ -100,13 +100,14 @@ jobs:
         cd package/lean
         rm -rf luci-app-netdata
         git clone https://github.com/sirpdboy/luci-app-netdata.git
-        
-    - name: 微信推送
+       
+    - name: Docker
       working-directory: ./openwrt
       run: |
-        cd package/lean
-        rm -rf luci-app-serverchan
-        git clone https://github.com/tty228/luci-app-serverchan.git
+        cd package
+        rm -rf luci-app-dockerman
+        git clone https://github.com/lisaac/luci-app-dockerman.git
+        
         
     - name: 配置自定义架构 - Build_x86_64
       env:
