@@ -58,7 +58,7 @@ jobs:
         sudo -E apt-get -y autoremove --purge
         sudo -E apt-get clean
 
-    - name: Clone source code
+    - name: 下载Lede源码
       env: 
         REPO_URL: https://github.com/coolsnowwolf/lede
         REPO_BRANCH: master
@@ -67,25 +67,34 @@ jobs:
         cd openwrt
         echo "src-git ssrp https://github.com/fw876/helloworld.git" >> ./feeds.conf.default
         
-    - name: Update & Install feeds
+    - name: 升级 & 安装 feeds
       working-directory: ./openwrt
       run: |
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         ./scripts/feeds install -a
-
-    #- name: Import external feeds - passwall
-    #  working-directory: ./openwrt
-    #  run: |
-    #    git clone https://github.com/xiaorouji/openwrt-passwall.git package/lienol
-    #    git clone "your_github_link" package/"your_folder_name"      
-
-    #- name: Import external feeds - JerryKuKu Argon
-    #  working-directory: ./openwrt
-    #  run: |
-    #    git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon-jerrykuku
-
-    - name: Configuration Customization - Build_x86_64
+        
+    - name: 导入第三方插件
+      working-directory: ./openwrt
+      run: |
+        git clone https://github.com/xiaorouji/openwrt-passwall.git package/openwrt-passwall
+        git clone https://github.com/281677160/openwrt-package.git package/281677160
+  
+    - name: argon_new主题
+      working-directory: ./openwrt
+      run: |
+        cd package/lean
+        rm -rf luci-theme-argon
+        git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
+        
+    - name: netdata汉化
+      working-directory: ./openwrt
+      run: |
+        cd package/lean
+        rm -rf luci-app-netdata
+        git clone https://github.com/sirpdboy/luci-app-netdata.git
+        
+    - name: 配置自定义架构 - Build_x86_64
       env:
         CONFIG_FILE: 'x86_64.config'
       run: |
@@ -93,20 +102,20 @@ jobs:
         chmod +x ./customize.sh && ./customize.sh
         cd openwrt && make defconfig
         
-    - name: Download package
+    - name: 下载DL库
       working-directory: ./openwrt
       run: |
         make download -j$(nproc)
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-
-    - name: Build firmware
+        
+    - name: 构建固件
       working-directory: ./openwrt
       run: |
         echo -e "$(nproc) thread build."
         make -j$(nproc) V=s
-
-    - name : Upload artifact
+        
+    - name : 上传固件
       uses: actions/upload-artifact@master
       with:
         name: OpenWrt
