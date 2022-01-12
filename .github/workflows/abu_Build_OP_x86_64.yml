@@ -112,14 +112,6 @@ jobs:
       run: |
         echo -e "$(nproc) thread build."
         make -j$(nproc) V=s
-               
-    - name: Prepare Files
-      run: |
-        cd "/home/runner/openwrt"
-        cp -f "bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined.img" "../openwrt-x86-64-generic-squashfs-combined.img"
-        cp -f "bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined.vmdk" "../openwrt-x86-64-generic-squashfs-combined.vmdk"
-#        cp -f "bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined-efi.img" "../openwrt-x86-64-generic-squashfs-combined-efi.img"
-#        cp -f "bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined-efi.vmdk" "../openwrt-x86-64-generic-squashfs-combined-efi.vmdk"
 
     - name: Prepare Release Zip File
       id: assemble_artifact
